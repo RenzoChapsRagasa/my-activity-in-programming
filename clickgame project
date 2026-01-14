@@ -1,0 +1,90 @@
+package sagasa;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class Clickgame {
+
+    private JFrame frame;
+    private JButton clickButton;
+    private JLabel timerLabel, scoreLabel;
+    private int score = 0;
+    private int timeLeft;
+    private Timer timer;
+
+    public static void main(String[] args) {
+        EventQueue.invokeLater(() -> {
+            try {
+            	Clickgame window = new Clickgame();
+                window.frame.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    public Clickgame() {
+        initialize();
+    }
+
+    private void initialize() {
+        
+        String[] options = {"Easy", "Medium", "Hard"};
+        int choice = JOptionPane.showOptionDialog(null, "Select Difficulty:", "Difficulty",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+
+        switch (choice) {
+            case 0 -> timeLeft = 15;  
+            case 1 -> timeLeft = 10;  
+            case 2 -> timeLeft = 5;   
+            default -> timeLeft = 10;  
+        }
+
+        // Frame setup
+        frame = new JFrame("Click Challenge Game");
+        frame.setSize(400, 300);
+        frame.setLayout(null);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null); // center frame
+
+        // Timer label
+        timerLabel = new JLabel("Time Left: " + timeLeft + "s");
+        timerLabel.setBounds(150, 20, 150, 30);
+        timerLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        frame.add(timerLabel);
+
+        // Score label
+        scoreLabel = new JLabel("Score: 0");
+        scoreLabel.setBounds(150, 50, 150, 30);
+        scoreLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        frame.add(scoreLabel);
+
+        // Click button
+        clickButton = new JButton("CLICK ME!");
+        clickButton.setBounds(125, 120, 150, 50);
+        clickButton.setFont(new Font("Arial", Font.BOLD, 16));
+        frame.add(clickButton);
+
+        // Button click action
+        clickButton.addActionListener(e -> {
+            score++;
+            scoreLabel.setText("Score: " + score);
+        });
+
+        // Timer countdown
+        timer = new Timer(1000, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                timeLeft--;
+                timerLabel.setText("Time Left: " + timeLeft + "s");
+                if (timeLeft <= 0) {
+                    timer.stop();
+                    clickButton.setEnabled(false);
+                    JOptionPane.showMessageDialog(frame, "Time's up! Your score: " + score);
+                    System.exit(0);
+                }
+            }
+        });
+        timer.start();
+    }
+}
