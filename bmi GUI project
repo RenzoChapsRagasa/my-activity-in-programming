@@ -1,0 +1,74 @@
+package sagasa;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class calculate_bmi {
+    public static void main(String[] args) {
+        // Create frame
+        JFrame frame = new JFrame("BMI Calculator");
+        frame.setSize(350, 250);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(null);
+
+        // Weight label and text field
+        JLabel weightLabel = new JLabel("Weight (kg):");
+        weightLabel.setBounds(20, 20, 100, 25);
+        frame.add(weightLabel);
+
+        JTextField weightField = new JTextField();
+        weightField.setBounds(150, 20, 150, 25);
+        frame.add(weightField);
+
+        // Height label and text field
+        JLabel heightLabel = new JLabel("Height (cm):");
+        heightLabel.setBounds(20, 60, 100, 25);
+        frame.add(heightLabel);
+
+        JTextField heightField = new JTextField();
+        heightField.setBounds(150, 60, 150, 25);
+        frame.add(heightField);
+
+        // Button to calculate BMI
+        JButton calculateButton = new JButton("Calculate BMI");
+        calculateButton.setBounds(100, 100, 150, 30);
+        frame.add(calculateButton);
+
+        // Label to display result
+        JLabel resultLabel = new JLabel("");
+        resultLabel.setBounds(50, 150, 300, 50);
+        frame.add(resultLabel);
+
+        // Action listener for button
+        calculateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    double weight = Double.parseDouble(weightField.getText());
+                    double height = Double.parseDouble(heightField.getText()) / 100; // convert cm to meters
+                    double bmi = weight / (height * height);
+                    bmi = Math.round(bmi * 100.0) / 100.0;
+
+                    String category;
+                    if (bmi < 18.5) {
+                        category = "Underweight";
+                    } else if (bmi < 24.9) {
+                        category = "Normal weight";
+                    } else if (bmi < 29.9) {
+                        category = "Overweight";
+                    } else {
+                        category = "Obese";
+                    }
+
+                    resultLabel.setText("BMI: " + bmi + " | Category: " + category);
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(frame, "Please enter valid numbers!", "Input Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+        // Make frame visible
+        frame.setVisible(true);
+    }
+}
