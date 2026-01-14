@@ -1,0 +1,32 @@
+package MyPatientApp;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Database {
+    private List<Patient> patients;
+
+    public Database() {
+        patients = new ArrayList<>();
+    }
+
+    public void addPatient(Patient p) {
+        patients.add(p);
+    }
+
+    public void updatePatient(int index, Patient p) {
+        if (index >= 0 && index < patients.size()) {
+            patients.set(index, p);
+        }
+    }
+
+    public void deletePatient(int index) {
+        if (index >= 0 && index < patients.size()) {
+            patients.remove(index);
+        }
+    }
+
+    public List<Patient> getAllPatients() {
+        return patients;
+    }
+}
